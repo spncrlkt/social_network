@@ -1,13 +1,13 @@
 require.config({
     paths: {
-        jQuery: '/js/libs/jquery',
-        Underscore: '/js/libs/underscore',
-        Backbone: '/js/libs/backbone',
-        text: '/js/libs/text',
+        jQuery: '/js/lib/jquery',
+        Underscore: '/js/lib/underscore',
+        Backbone: '/js/lib/backbone',
+        text: '/js/lib/text',
         templates: '../templates'
     },
 
-    shim {
+    shim: {
         'Backbone': ['Underscore', 'jQuery'],
         'SocialNet': ['Backbone']
     }
