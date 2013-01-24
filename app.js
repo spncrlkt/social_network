@@ -32,4 +32,26 @@ app.post('/register', function(req, res) {
     res.send(200);
 });
 
+app.post('/login', function(req, res) {
+    console.log('login requst');
+    var email = req.param('email', null);
+    var password = req.param('password', null);
+
+    if ( null === email || email.length < 1 || 
+         null === password || pasword.length < 1) {
+        res.send(400);
+        return;
+    }
+
+    Account.login(email, password, function(success) {
+        if (!success) {
+            res.send(401);
+            return;
+        }
+        console.log('login was successful');
+        res.send(200);
+    });
+});
+
+
 app.listen(8008);
