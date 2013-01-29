@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var nodemailer = require('nodemailer');
 var MemoryStore = require('connect').session.MemoryStore;
+var dbPath  ='mongodb://localhost/nodebackbone';
 
 // Import the data layer
 var mongoose = require('mongoose');
@@ -15,12 +16,14 @@ var Account = require('./models/Account')(config, mongoose, nodemailer);
 app.configure(function() {
     app.set('view engine', 'jade');
     app.use(express.static(__dirname + '/public'));
-    app.use(express.limit('1mb');
+    app.use(express.limit('1mb'));
     app.use(express.bodyParser());
     app.use(express.cookieParser());
     app.use(express.session(
         {secret: "SocialNet secret key", store: new MemoryStore()}));
-    mongoose.connect('mongodb://localhost/nodebackbone');
+    mongoose.connect(dbPath, function onMongooseerror(err) {
+        if (err) throw err;
+    });
 });
 
 app.get('/', function(req, res) {
@@ -100,6 +103,47 @@ app.post('/resetPassword', function(req, res) {
         Account.changePassword(accountId, password);
     }
     res.render('resetPasswordSuccess.jade');
+});
+
+
+app.get('/accounts/:id', function(req, res) {
+    var accountId = req.params.id == 'me' ? req.session.accountId : req.params.id;
+    Account.findOne({_id:accountId}, function(account) {
+        res.send(account);
+    });
+});
+
+app.get('/accounts/:id/status', function(req, res) {
+    var accountId = req.params.id == 'me' ? req.session.accountId : req.params.id;
+    models.Account.findById(accountId, function(account) {
+        res.send(account.status);
+    });
+});
+
+app.post('/accounts/:id/status', function(req, res) {
+    var accountId = req.params.id == 'me' ? req.session.accountId : req.params.id;
+    models.Account.findById(accountId, function(account) {
+        status = {
+            name: account.name,
+            status: req.param('status', '')
+        };
+        account.status.push(status);
+
+        account.activity.push(status);
+        account.save(function (err) {
+            if (err) {
+                console.log('Error saving account: ' + err);
+            }
+        });
+    });
+    res.send(200);
+});
+
+app.get('/accounts/:id/activity', function(req,res) {
+    var accountId = req.parms.id == 'me' ? req.session.accountId : req.params.id;
+    madels.Account.findById(accountId, function(account) {
+        res.send(account.activity);
+    });
 });
 
 
