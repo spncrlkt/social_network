@@ -10,8 +10,11 @@ var config = {
     mail: require('./config/mail')
 };
 
-// Import the accounts
-var Account = require('./models/Account')(config, mongoose, nodemailer);
+// Import the models 
+var models = {
+    Account: require('./models/Account')(config, mongoose, null, nodemailer)
+};
+
 
 app.configure(function() {
     app.set('view engine', 'jade');
@@ -48,7 +51,7 @@ app.post('/register', function(req, res) {
         return;
     }
 
-    Account.register(email, password, firstName, lastName);
+    models.Account.register(email, password, firstName, lastName);
     res.send(200);
 });
 
@@ -58,17 +61,19 @@ app.post('/login', function(req, res) {
     var password = req.param('password', null);
 
     if ( null === email || email.length < 1 || 
-         null === password || pasword.length < 1) {
+         null === password || password.length < 1) {
         res.send(400);
         return;
     }
 
-    Account.login(email, password, function(success) {
-        if (!success) {
+    models.Account.login(email, password, function(account) {
+        if (!account) {
             res.send(401);
             return;
         }
         console.log('login was successful');
+        req.session.loggedIn = true;
+        req.session.accountId = account._id;
         res.send(200);
     });
 });
@@ -82,7 +87,7 @@ app.post('/forgotpassword', function(req, res) {
         return;
     }
 
-    Account.forgotPassword(email, resetPasswordUrl, function(success) {
+    models.Account.forgotPassword(email, resetPasswordUrl, function(success) {
         if (success) {
             res.send(200);
         } else {
@@ -100,7 +105,7 @@ app.post('/resetPassword', function(req, res) {
     var accountId = req.param('accountId', null);
     var password = req.param('password', null);
     if (null !== accountId && null !== password) {
-        Account.changePassword(accountId, password);
+        models.Account.changePassword(accountId, password);
     }
     res.render('resetPasswordSuccess.jade');
 });
@@ -108,7 +113,7 @@ app.post('/resetPassword', function(req, res) {
 
 app.get('/accounts/:id', function(req, res) {
     var accountId = req.params.id == 'me' ? req.session.accountId : req.params.id;
-    Account.findOne({_id:accountId}, function(account) {
+    models.Account.findById(accountId, function(account) {
         res.send(account);
     });
 });
@@ -140,8 +145,9 @@ app.post('/accounts/:id/status', function(req, res) {
 });
 
 app.get('/accounts/:id/activity', function(req,res) {
-    var accountId = req.parms.id == 'me' ? req.session.accountId : req.params.id;
-    madels.Account.findById(accountId, function(account) {
+    debugger;
+    var accountId = req.params.id == 'me' ? req.session.accountId : req.params.id;
+    models.Account.findById(accountId, function(account) {
         res.send(account.activity);
     });
 });

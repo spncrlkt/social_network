@@ -14,5 +14,6 @@ require.config({
 });
 
 require(['SocialNet'], function(SocialNet) {
+    debugger;
     SocialNet.initialize();
 });

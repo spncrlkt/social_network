@@ -3,6 +3,7 @@ define(['models/StatusCollection'], function(StatusCollection) {
         urlRoot: '/accounts',
 
         initialize: function() {
+            debugger;
             this.status = new StatusCollection();
             this.status.url = '/accounts/' + this.id + '/status';
             this.activity = new StatusCollection();
