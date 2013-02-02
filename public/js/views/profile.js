@@ -14,7 +14,6 @@ define(['SocialNetView', 'text!templates/profile.html',
                     _.template(profileTemplate, this.model.toJSON())
                     );
 
-                debugger;
                 var statusCollection = this.model.get('status');
                 if ( null !== statusCollection ) {
                     _.each(statusCollection, function (statusJson) {

@@ -9,7 +9,6 @@ define(['SocialNetView','text!templates/index.html',
             },
 
             initialize: function() {
-                debugger;
                 this.collection.on('add', this.onStatusAdded, this);
                 this.collection.on('reset', this.onStatusCollectionReset, this);
             },
@@ -23,7 +22,6 @@ define(['SocialNetView','text!templates/index.html',
 
             onStatusAdded: function(status) {
                 var statusHtml = (new StatusView({model:status})).render().el;
-                debugger;
                 $(statusHtml).prependTo('.status_list').hide().fadeIn('slow');
             },
 
