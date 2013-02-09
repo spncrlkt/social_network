@@ -18,7 +18,7 @@ define(['SocialNetView', 'text!templates/profile.html',
                 if ( null !== statusCollection ) {
                     _.each(statusCollection, function (statusJson) {
                         var statusModel = new Status(statusJson);
-                        var statusHtml = (new StatusView({ model: statusModel })).render.el;
+                        var statusHtml = (new StatusView({ model: statusModel })).render().el;
                         $(statusHtml).prependTo('.status_list').hide().fadeIn('slow');
                     });
                 }

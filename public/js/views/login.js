@@ -4,7 +4,6 @@ define(['text!templates/login.html'], function(loginTemplate) {
 
         events: {
             "submit form": "login"
-            //"click form": "test"
         },
 
         login: function() {
@@ -12,16 +11,11 @@ define(['text!templates/login.html'], function(loginTemplate) {
                 email: $('input[name=email]').val(),
                 password: $('input[name=password]').val()
             }, function(data) {
-                document.location.reload();
+                window.location.hash = 'index';
             }).error(function() {
                 $("#error").text('Unable to login.');
                 $("#error").slideDown();
             });
-            return false;
-        },
-
-        test: function() {
-            alert("testing");
             return false;
         },
 
