@@ -9,12 +9,23 @@ module.exports = function(config, mongoose, Status, nodemailer) {
         status:     { type: String }
     });
 
+    var Contact = new mongoose.Schema({
+        name: {
+            first: { type: String },
+            last:  { type: String }
+        },
+        accountId: { type: mongoose.Schema.ObjectId },
+        added:     { type: Date },
+        updated:   { type: Date}
+    });
+
     var AccountSchema = new mongoose.Schema({
         email:      { type: String, unique: true },
         password:   { type: String },
         name:       {
             first:      { type: String },
-            last:       { type: String }
+            last:       { type: String },
+            full:       { type: String }
         },
         birthday:   {
             day:        { type: Number, min: 1, max: 31, required: false },
@@ -23,6 +34,7 @@ module.exports = function(config, mongoose, Status, nodemailer) {
         },
         photoUrl:   { type: String },
         biography:  { type: String },
+        contacts:   [Contact],
         status:     [Status], // My own Status updates only
         activity:   [Status] // All status updates including friends
     });
@@ -93,7 +105,8 @@ module.exports = function(config, mongoose, Status, nodemailer) {
             email: email,
             name: {
                 first: firstName,
-                last: lastName
+                last: lastName,
+                full: firstName + ' ' + lastName
             },
             password: shaSum.digest('hex')
         });
@@ -112,9 +125,10 @@ module.exports = function(config, mongoose, Status, nodemailer) {
     };
 
     var addContact = function (account, addcontact) {
+        debugger;
         contact = {
-            name: addcontact.name,
-            accountId: addcantact._id,
+            name: addcontact.name.toObject(),
+            accountId: addcontact._id,
             added: new Date(),
             updated: new Date()
         };

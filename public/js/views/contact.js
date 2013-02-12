@@ -13,15 +13,13 @@ function(SocialNetView, contactTemplate) {
         },
 
         addContact: function() {
-            var $responseArea = this.$('.actionArea');
-            $.post('/accounts/me/contact',
-                {contactId: this.model.get('_id')},
-                function onSuccess() {
-                    $responseArea.text('Contact Added');
-                }, function onError() {
-                    $responseArea.text('Could not add contact');
-                }
-            );
+            var $responseArea = this.$('.actionarea');
+            $.post('/accounts/me/contact', {contactId: this.model.get('_id')}
+            ).done(function onSuccess() {
+                $responseArea.text('Contact Added');
+            }).fail(function onError() {
+                $responseArea.text('Could not add contact');
+            });
         },
 
         removeContact: function() {

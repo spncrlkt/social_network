@@ -12,6 +12,7 @@ function(SocialNetView, ContactView, contactsTemplate) {
         },
 
         renderCollection: function(collection) {
+            debugger;
             collection.each(function(contact) {
                 var statusHtml = (new ContactView(
                                     { removeButton: true, model: contact }

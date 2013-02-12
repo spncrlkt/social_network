@@ -8,7 +8,7 @@ function(SocialNetView, Contact, ContactView, addcontactTemplate) {
         },
 
         search: function() {
-            var view = tihs;
+            var view = this;
             $.post('/contacts/find',
                 this.$('form').serialize(), 
                 function(data) {
@@ -26,7 +26,7 @@ function(SocialNetView, Contact, ContactView, addcontactTemplate) {
             if ( null !== resultList) {
                 _.each(resultList, function (contactJson) {
                     var contactModel = new Contact(contactJson);
-                    var contactHtml = (new contactView(
+                    var contactHtml = (new ContactView(
                                         { addButton: true, model: contactModel }
                                     )).render().el;
                     $('#results').append(contactHtml);

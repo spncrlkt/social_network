@@ -40,7 +40,7 @@ function(SocialNetView, profileTemplate, statusTemplate, Status, StatusView) {
             if ( null !== statusCollection ) {
                 _.each(statusCollection, function (statusJson) {
                     var statusModel = new Status(statusJson);
-                    that.prpendStatus(statusModel);
+                    that.prependStatus(statusModel);
                 });
             }
         }
