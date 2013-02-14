@@ -39,7 +39,9 @@ app.configure(function() {
 
 fs.readdirSync('routes').forEach(function(file) {
     var routeName = file.substr(0, file.indexOf('.'));
-    require('./routes/'+routeName)(app, models);
+    if (routeName !== '') {
+        require('./routes/'+routeName)(app, models);
+    }
 });
 
 
