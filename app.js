@@ -20,15 +20,15 @@ var models = {
     Account: require('./models/Account')(config, mongoose, null, nodemailer)
 };
 
-
 app.configure(function() {
+    app.sessionSecret = 'SocialNet Secret Key';
     app.set('view engine', 'jade');
     app.use(express.static(__dirname + '/public'));
     app.use(express.limit('1mb'));
     app.use(express.bodyParser());
     app.use(express.cookieParser());
     app.use(express.session({
-        secret: "SocialNet secret key",
+        secret: app.sessionSecret,
         key: 'express.sid',
         store: app.sessionStore
     }));
@@ -44,5 +44,4 @@ fs.readdirSync('routes').forEach(function(file) {
     }
 });
 
-
-app.listen(8008);
+app.server.listen(8008);

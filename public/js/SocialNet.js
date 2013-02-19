@@ -1,5 +1,6 @@
-define(['router'], function(router) {
+define(['router','SocialNetSockets'], function(router, socket) {
     var initialize = function() {
+        socket.initialize(router.socketEvents);
         checkLogin(runApplication);
     };
 
@@ -17,6 +18,7 @@ define(['router'], function(router) {
 
     var runApplication = function(authenticated) {
         if (!authenticated) { 
+            router.socketEvents.trigger('app:loggedin');
             window.location.hash = 'login';
         } else {
             window.location.hash = 'index';

@@ -4,7 +4,10 @@ require.config({
         Underscore: '/js/lib/underscore',
         Backbone: '/js/lib/backbone',
         text: '/js/lib/text',
-        templates: '../templates'
+        templates: '../templates',
+        Sockets: '/socket.io/socket.io',
+        models: 'models',
+        SocialNetView: '/js/SocialNetView'
     },
 
     shim: {
