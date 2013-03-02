@@ -17,11 +17,11 @@ define(['router','SocialNetSockets'], function(router, socket) {
     };
 
     var runApplication = function(authenticated) {
-        if (!authenticated) { 
+        if (authenticated) { 
             router.socketEvents.trigger('app:loggedin');
-            window.location.hash = 'login';
-        } else {
             window.location.hash = 'index';
+        } else {
+            window.location.hash = 'login';
         }
         Backbone.history.start();
     };
